@@ -1,0 +1,18 @@
+{
+  "name": "uwrf_course_parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "get_department_courses": "node commands/GetDepartmentCourses.js",
+    "get_course_details": "node commands/GetCourseDetails.js",
+    "get_department_course_details": "node commands/GetDepartmentCourseDetails.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.5.2"
+  }
+}
