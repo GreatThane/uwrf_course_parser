@@ -7,7 +7,9 @@
   "scripts": {
     "get_department_courses": "node commands/GetDepartmentCourses.js",
     "get_course_details": "node commands/GetCourseDetails.js",
-    "get_department_course_details": "node commands/GetDepartmentCourseDetails.js"
+    "get_department_course_details": "node commands/GetDepartmentCourseDetails.js",
+    "get_departments": "node commands/GetDepartments.js",
+    "get_all_department_course_details": "node commands/GetAllDepartmentCourseDetails.js"
   },
   "keywords": [],
   "author": "",

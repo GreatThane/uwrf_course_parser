@@ -87,3 +87,34 @@ will still be included for visibility.
       "courseId": 789
 }
 ```
+
+## Getting All Departments
+1. `npm get_departments`
+
+Will result in a status code of 1 in the result of an error (with a relevant error message),
+or status code 0 in the event of a successful scrape and the departments.
+
+```json
+[
+  "ACCT", "AGBI", "AGEC", "AGED", "AGEN", "AET",  "AFES",
+  "ANSC", "ANTH", "APC",  "ART",  "BIOL", "BIOT", "BLAW",
+  "CHEM", "CHIN", "CSD",  "COMS", "CIDS", "COUN", "CRIM",
+  "ENVN", "ESM",  "EXSS", "FILM", "FINC", "FDSC", "FREN",
+  "GENG", "GIS",  "GEOG", "GEOL", "GERM", "HWM",  "HEAL",
+  "HIST", "HON",  "HORT", "INTS", "JAPN", "JOUR", "MNGT",
+  "MKTG", "MARC", "MATH", "MCNR", "MSL",  "MODL", "MONT",
+  "MUS",  "MUSA", "MUSE", "NSCI", "PHIL", "P ED", "P E",
+  "PHYS", "PLSC", "POLS", "PSYC", "READ", "SFED", "SBE",
+  "SPSY", "SOWK", "SOCI", "SOIL", "SPAN", "SPED", "SASA",
+  "STAC", "SUSJ", "SMGT", "TED",  "TESL", "UNIV", "UTCH",
+  "UWX",  "WIS",  "WGSS", "ABRD"
+]
+```
+
+## Getting Details for All Courses Under All Departments
+1. `npm get_all_department_course_details`
+
+Will result in a status code of 1 in the result of an error (with a relevant error message),
+or status code 0 in the event of a successful scrape and the departments and courses details.
+
+Results in beeg data.

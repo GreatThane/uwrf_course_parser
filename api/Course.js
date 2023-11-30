@@ -1,7 +1,7 @@
 import {page} from "./Shared.js"
 
 export class Course {
-    constructor(departmentId, courseId) {
+    constructor(departmentId, courseId, availableDepartments) {
         if (!departmentId) {
             throw new Error(`"${departmentId}" is not a valid department.`);
         }
@@ -10,6 +10,15 @@ export class Course {
         }
         this.departmentId = departmentId;
         this.courseId = courseId;
+        this.availableDepartments = availableDepartments.map(s => s.toUpperCase());
+    }
+
+    isValidDepartment(department) {
+        if (!this.availableDepartments) {
+            return /^[A-Z]{2,4}$/g.test(department);
+        }
+
+        return this.availableDepartments.includes(department.toUpperCase());
     }
 
     async getDetails() {
@@ -42,18 +51,24 @@ export class Course {
                 let prerequisites;
                 [details, prerequisites] = details.split(preReqRegex);
                 output.details = details.replaceAll('\n', '').trim();
+                if (this.availableDepartments) {
+                    for (let department of this.availableDepartments) {
+                        prerequisites.replaceAll(new RegExp(department, "gi"), department.replaceAll(/\s/g,"_"));
+                    }
+                }
                 prerequisites = prerequisites.trim().split(/\W+/g)
-                    .filter(s => /^(?:\d{3}|[A-Z]{3,})$/g.test(s));
+                    .filter(s => /^(?:\d{3}|[A-Z]{2,4})$/gi.test(s))
+                    .map(s => s.replaceAll("_", " "));
 
                 let currentDepartment = null;
                 output.prerequisites = [];
-                for (let i = 0; i < prerequisites.length; i++) {
-                    if (/^[A-Z]{3,}$/g.test(prerequisites[i])) {
-                        currentDepartment = prerequisites[i];
-                    } else if (currentDepartment && !Number.isNaN(Number(prerequisites[i]))) {
+                for (let prerequisite of prerequisites) {
+                    if (this.isValidDepartment(prerequisite)) {
+                        currentDepartment = prerequisite.toUpperCase();
+                    } else if (currentDepartment && !Number.isNaN(Number(prerequisite))) {
                         output.prerequisites.push({
                             department: currentDepartment,
-                            course: Number(prerequisites[i])
+                            course: Number(prerequisite)
                         });
                     }
                 }

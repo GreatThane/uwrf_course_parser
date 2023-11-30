@@ -1,19 +1,21 @@
 import {Department} from "../api/Department.js";
 import {terminate} from "../api/Shared.js";
 import {Course} from "../api/Course.js";
+import {DepartmentList} from "../api/DepartmentList.js";
 
 try {
+    const departments = await new DepartmentList().getList();
     const department = new Department(process.argv[2]);
     const courses = [];
     for (let courseId of await department.getCourses()) {
         try {
             courses.push({
-                courseId: courseId,
-                ...await new Course(department.id, courseId).getDetails()
+                id: courseId,
+                ...await new Course(department.id, courseId, departments).getDetails()
             });
         } catch (e) {
             courses.push({
-                courseId: courseId
+                id: courseId
             });
         }
 
