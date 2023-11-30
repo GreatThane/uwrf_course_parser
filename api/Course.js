@@ -42,31 +42,22 @@ export class Course {
                 let prerequisites;
                 [details, prerequisites] = details.split(preReqRegex);
                 output.details = details.replaceAll('\n', '').trim();
-                prerequisites = prerequisites.trim().split(/,|and/gi)
-                    .map(s => s.trim().split(" "))
-                    .map(a => a.map(s => s.replaceAll(/\W/g,'')))
-                    .map(a => a.filter(s => /^(?:\d+|[A-Z]+)$/g.test(s)))
-                    .map(a => a.filter((s, i, a) => (i !== 0 && /[A-Z]+/g.test(a[i - 1]) && /\d+/g.test(s))
-                        || (i !== a.length - 1 && /\d+/g.test(a[i + 1]) && /[A-Z]+/g.test(s))))
-                    .filter(a => a.length > 0);
+                prerequisites = prerequisites.trim().split(/\W+/g)
+                    .filter(s => /^(?:\d{3}|[A-Z]{3,})$/g.test(s));
 
+                let currentDepartment = null;
                 output.prerequisites = [];
                 for (let i = 0; i < prerequisites.length; i++) {
-                    if (prerequisites[i].length >= 2) {
-                        for (let j = 0; j < prerequisites[i].length; j += 2) {
-                            output.prerequisites.push([prerequisites[i][j], prerequisites[i][j + 1]]);
-                        }
-                    } else {
-                        output.prerequisites.push(prerequisites[i]);
+                    if (/^[A-Z]{3,}$/g.test(prerequisites[i])) {
+                        currentDepartment = prerequisites[i];
+                    } else if (currentDepartment && !Number.isNaN(Number(prerequisites[i]))) {
+                        output.prerequisites.push({
+                            department: currentDepartment,
+                            course: Number(prerequisites[i])
+                        });
                     }
                 }
-                output.prerequisites = output.prerequisites.map(a => ({
-                    department: a[0].trim(),
-                    course: Number(a[1].trim())
-                }));
-
             } else output.details = details;
-
         }
 
         const numSections = (await page.$$('tbody > .tr-border')).length;
